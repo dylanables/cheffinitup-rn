@@ -8,6 +8,7 @@ import {HeartIcon} from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 import Loading from '../components/loading';
+import Animated, {FadeInDown, FadeIn} from 'react-native-reanimated';
 //import YoutubeIframe from "react-native-youtube-iframe";
 
 export default function RecipeScreen(props) {
@@ -67,18 +68,19 @@ export default function RecipeScreen(props) {
       <View className="flex-row justify-center">
         <CachedImage
           uri={item.strMealThumb}
-          style={{width: wp(100), height: hp(50), borderRadius: 53, borderBottomLeftRadius: 40, borderBottomRightRadius: 40}} />
+          style={{width: wp(100), height: hp(50), borderRadius: 53, borderBottomLeftRadius: 40, borderBottomRightRadius: 40}}
+        />
       </View>
 
-      {/* Back button */}
-      <View className="w-full absolute flex-row justify-between items-center pt-14">
-        <TouchableOpacity onPress={()=>navigaation.goBack()}className="p-2 rounded-full ml-5 bg-white">
+      {/* Back & like buttons */}
+      <Animated.View entering={FadeIn.delay(200).duration(1000)} className="w-full absolute flex-row justify-between items-center pt-14">
+        <TouchableOpacity onPress={()=>navigaation.goBack()} className="p-2 rounded-full ml-5 bg-white">
           <ChevronLeftIcon size={hp(3.5)} strokeWidth={4.5} color="#fbbf24" />
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>setIsLiked(!isLiked)} className="p-2 rounded-full mr-5 bg-white">
           <HeartIcon size={hp(3.5)} strokeWidth={4.5} color={isLiked ? "red": "gray"} />
         </TouchableOpacity>
-      </View>
+      </Animated.View>
 
       {/* Recipe description */}
       {loading ? (
@@ -86,13 +88,13 @@ export default function RecipeScreen(props) {
       ) : (
         <View className="px-4 flex justify-between space-y-4 pt-8">
 
-          <View className="space-y-2">
+          <Animated.View entering={FadeInDown.duration(700).springify().damping(12)} className="space-y-2">
             <Text style={{fontSize: hp(3)}} className="font-bold flex-1 text-neutral-700">{recipeData?.strMeal}</Text>
             <Text style={{fontSize: hp(2)}} className="font-medium flex-1 text-neutral-500">{recipeData?.strArea}</Text>
-          </View>
+          </Animated.View>
 
           {/* Details */}
-          <View className="flex-row justify-around">
+          <Animated.View entering={FadeInDown.delay(100).duration(700).springify().damping(12)} className="flex-row justify-around">
             
             <View className="flex rounded-full bg-amber-300 p-2">
               <View 
@@ -130,10 +132,10 @@ export default function RecipeScreen(props) {
               </View>
             </View>
 
-          </View>
+          </Animated.View>
 
           {/* Ingredients */}
-          <View className="space-y-4">
+          <Animated.View entering={FadeInDown.delay(200).duration(700).springify().damping(12)} className="space-y-4">
             <Text style={{fontSize: hp(2.5)}} className="font-bold flex-1 text-neutral-700">Ingredients</Text>
             <View className="space-y-2 ml-3">
               {getIngredientsIndices(recipeData).map(i=>{
@@ -146,21 +148,22 @@ export default function RecipeScreen(props) {
                 </View>
               })}
             </View>
-          </View>
+          </Animated.View>
 
           {/* Instructions */}
-          <View className="space-y-4">
+          <Animated.View entering={FadeInDown.delay(300).duration(700).springify().damping(12)} className="space-y-4">
             <Text style={{fontSize: hp(2.5)}} className="font-bold flex-1 text-neutral-700">Instructions</Text>
             <Text style={{fontSize: hp(1.6)}} className="text-neutral-700">
               {
                 recipeData?.strInstructions
               }
             </Text>
-          </View>
+          </Animated.View>
 
           {/* Video */}
           {/*
-          <View className="space-y-4">
+          recipeData?.strYoutube && 
+          <Animated.View entering={FadeInDown.delay(400).duration(700).springify().damping(12)} className="space-y-4">
               {
                 recipeData?.strYoutube && 
                 <View className="space-y-4">
@@ -173,7 +176,7 @@ export default function RecipeScreen(props) {
                   </View>
                 </View>
               }
-          </View>
+          </Animated.View>
           */}
 
 

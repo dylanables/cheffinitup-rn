@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TextInput } from 'react-native'
+import { View, Text, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
@@ -12,6 +12,7 @@ export default function HomeScreen() {
     const [activeCategory, setActiveCategory] = useState("Beef");
     const [categories, setCategories] = useState([]);
     const [recipes, setRecipes] = useState([]);
+    const [query, setQuery] = useState("");
 
     useEffect(()=>{
         getCategories();
@@ -46,6 +47,18 @@ export default function HomeScreen() {
         }
     }
 
+    const getRecipesBySearch = async (query) => {
+        try {
+            const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`)
+            if (response && response.data) {
+                setRecipes(response.data.meals)
+                setActiveCategory(null)
+            }
+        } catch (error) {
+            console.error("Error:", error)
+        }
+    }
+
   return (
     <View className="flex-1 bg-white">
         <StatusBar style='dark' />
@@ -72,9 +85,13 @@ export default function HomeScreen() {
                     placeholder='Search recipes'
                     placeholderTextColor={'gray'}
                     style={{fontSize: hp(1.7)}}
-                    className="flex-1 text-base mb-1 pl-3 tracking-wider" />
+                    className="flex-1 text-base mb-1 pl-3 tracking-wider"
+                    onChangeText={newQuery => setQuery(newQuery)}
+                    value={query} />
                 <View className="bg-white rounded-full p-3">
-                    <MagnifyingGlassIcon size={hp(2.7)} strokeWidth={3} color="gray" />
+                    <TouchableOpacity onPress={()=>getRecipesBySearch(query)}>
+                        <MagnifyingGlassIcon size={hp(2.7)} strokeWidth={3} color="gray" />
+                    </TouchableOpacity>
                 </View>
             </View>
 
