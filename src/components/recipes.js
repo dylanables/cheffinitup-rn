@@ -14,7 +14,9 @@ export default function Recipes({recipes}) {
     <View className="mx-4 space-y-3">
       <Text style={{fontSize: hp(3)}} className="font-semibold text-neutral-600">Recipes</Text>
       <View>
-        {recipes.length == 0 ? (
+        {!recipes ? 
+        <Text className="mt-10">No recipes found.</Text> : 
+        recipes.length == 0 ? (
             <Loading size="large" className="mt-20" />
         ) : (
             <MasonryList

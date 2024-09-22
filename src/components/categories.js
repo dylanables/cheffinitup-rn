@@ -24,7 +24,7 @@ export default function Categories({categories, activeCategory, handleChangeCate
                         onPress={() => handleChangeCategory(cat.strCategory)}
                         className="flex items-center space-y-1 mr-5"
                     >
-                        <View className={`rounded-full p-[6px] ${isActive ? 'bg-amber-400' : 'bg-black/10'}`}>
+                        <View className={`rounded-full p-[6px] ${isActive ? 'bg-red-500' : 'bg-black/10'}`}>
                             <CachedImage 
                                 uri={ cat.strCategoryThumb}
                                 style={{height: hp(6), width: hp(6)}}

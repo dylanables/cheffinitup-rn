@@ -75,7 +75,7 @@ export default function RecipeScreen(props) {
       {/* Back & like buttons */}
       <Animated.View entering={FadeIn.delay(200).duration(1000)} className="w-full absolute flex-row justify-between items-center pt-14">
         <TouchableOpacity onPress={()=>navigaation.goBack()} className="p-2 rounded-full ml-5 bg-white">
-          <ChevronLeftIcon size={hp(3.5)} strokeWidth={4.5} color="#fbbf24" />
+          <ChevronLeftIcon size={hp(3.5)} strokeWidth={4.5} color="#f44336" />
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>setIsLiked(!isLiked)} className="p-2 rounded-full mr-5 bg-white">
           <HeartIcon size={hp(3.5)} strokeWidth={4.5} color={isLiked ? "red": "gray"} />
@@ -96,39 +96,39 @@ export default function RecipeScreen(props) {
           {/* Details */}
           <Animated.View entering={FadeInDown.delay(100).duration(700).springify().damping(12)} className="flex-row justify-around">
             
-            <View className="flex rounded-full bg-amber-300 p-2">
+            <View className="flex rounded-full bg-red-500 p-2">
               <View 
                 style={{height: hp(6.5), width: hp(6.5)}}
                 className="bg-white rounded-full flex items-center justify-center">
                 <ClockIcon  size={hp(4)} strokeWidth={2.5} color="#525252" />
               </View>
               <View className="flex items-center py-2 space-y-1">
-                <Text style={{fontSize: hp(2)}} className="font-bold text-neutral-700">35</Text>
-                <Text style={{fontSize: hp(1.3)}} className="font-bold text-neutral-700">mins</Text>
+                <Text style={{fontSize: hp(2)}} className="font-bold text-white">35</Text>
+                <Text style={{fontSize: hp(1.3)}} className="font-bold text-white">mins</Text>
               </View>
             </View>
 
-            <View className="flex rounded-full bg-amber-300 p-2">
+            <View className="flex rounded-full bg-red-500 p-2">
               <View 
                 style={{height: hp(6.5), width: hp(6.5)}}
                 className="bg-white rounded-full flex items-center justify-center">
                 <UsersIcon  size={hp(4)} strokeWidth={2.5} color="#525252" />
               </View>
               <View className="flex items-center py-2 space-y-1">
-                <Text style={{fontSize: hp(2)}} className="font-bold text-neutral-700">3</Text>
-                <Text style={{fontSize: hp(1.3)}} className="font-bold text-neutral-700">servings</Text>
+                <Text style={{fontSize: hp(2)}} className="font-bold text-white">3</Text>
+                <Text style={{fontSize: hp(1.3)}} className="font-bold text-white">servings</Text>
               </View>
             </View>
 
-            <View className="flex rounded-full bg-amber-300 p-2">
+            <View className="flex rounded-full bg-red-500 p-2">
               <View 
                 style={{height: hp(6.5), width: hp(6.5)}}
                 className="bg-white rounded-full flex items-center justify-center">
                 <FireIcon  size={hp(4)} strokeWidth={2.5} color="#525252" />
               </View>
               <View className="flex items-center py-2 space-y-1">
-                <Text style={{fontSize: hp(2)}} className="font-bold text-neutral-700">300</Text>
-                <Text style={{fontSize: hp(1.3)}} className="font-bold text-neutral-700">calories</Text>
+                <Text style={{fontSize: hp(2)}} className="font-bold text-white">300</Text>
+                <Text style={{fontSize: hp(1.3)}} className="font-bold text-white">calories</Text>
               </View>
             </View>
 
@@ -140,7 +140,7 @@ export default function RecipeScreen(props) {
             <View className="space-y-2 ml-3">
               {getIngredientsIndices(recipeData).map(i=>{
                 return <View key={i} className="flex-row space-x-4">
-                  <View style={{height: hp(1.5), width: hp(1.5)}} className="bg-amber-300 rounded-full" />
+                  <View style={{height: hp(1.5), width: hp(1.5)}} className="bg-red-500 rounded-full" />
                     <View key={i} className="flex-row space-x-2">
                       <Text style={{fontSize: hp(1.7)}} className="font-extrabold text-neutral-700">{recipeData['strMeasure'+i]}</Text>
                       <Text style={{fontSize: hp(1.7)}} className="font-medium text-neutral-600">{recipeData['strIngredient'+i]}</Text>

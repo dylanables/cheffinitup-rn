@@ -2,16 +2,15 @@ import { View, Text, ScrollView, Image, TextInput, TouchableOpacity } from 'reac
 import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import {ArrowsRightLeftIcon, MagnifyingGlassIcon} from 'react-native-heroicons/outline'
+import {BellIcon, MagnifyingGlassIcon} from 'react-native-heroicons/outline'
 import Categories from '../components/categories'
 import Recipes from '../components/recipes'
 import axios from 'axios'
-import { useNavigation } from '@react-navigation/native';
+import SwipeCard from '../components/swipeCard'
 import Navbar from '../components/navbar'
 
-export default function HomeScreen() {
+export default function SwipeScreen() {
 
-    const navigation = useNavigation();
     const [activeCategory, setActiveCategory] = useState("Beef");
     const [categories, setCategories] = useState([]);
     const [recipes, setRecipes] = useState([]);
@@ -66,20 +65,11 @@ export default function HomeScreen() {
   return (
     <View className="flex-1 bg-white">
         <StatusBar style='dark' />
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 50}}
-            className="space-y-6 pt-14"
-        >
-            <Navbar screen="Home"/>
-
-            {/* Heading text */}
-            <View className="mx-4 space-y-2 mb-2">
-                <Text style={{fontSize: hp(1.7)}} className="text-neutral-600">Hello, Dylan!</Text>
-                <Text style={{fontSize: hp(3.8)}} className="font-semibold text-neutral-600">What will you chef up next?</Text>
-            </View>
+        <View className="space-y-6 pt-14">
+            <Navbar screen="Swipe"/>
 
             {/* Search bar */}
+            {/*
             <View className="mx-4 flex-row items-center rounded-full bg-black/5 p-[6px]">
                 <TextInput 
                     placeholder='Search recipes'
@@ -94,21 +84,24 @@ export default function HomeScreen() {
                     </TouchableOpacity>
                 </View>
             </View>
+            */}
+
+            {/* Recipes */}
+            <View className="min-h-[80%] w-full">
+                <SwipeCard />
+            </View>
 
             {/* Categories */}
+            {/*
             <View>
                 {
                     categories.length > 0 && 
                     <Categories categories={categories} activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} />
                 }
             </View>
-
-            {/* Recipes */}
-            <View>
-                <Recipes recipes={recipes} />
-            </View>
+            */}
             
-        </ScrollView>
+        </View>
     </View>
   )
 }
