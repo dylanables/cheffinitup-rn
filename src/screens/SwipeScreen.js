@@ -11,6 +11,8 @@ import SwipeCard from '../components/swipeCard'
 import Navbar from '../components/navbar'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, useAnimatedGestureHandler, useDerivedValue, interpolate, runOnJS } from 'react-native-reanimated'
 import {GestureHandlerRootView, PanGestureHandler} from 'react-native-gesture-handler'
+import Like from '../../assets/like.png'
+import Nope from '../../assets/nope.png'
 
 export default function SwipeScreen() {
 
@@ -79,6 +81,20 @@ export default function SwipeScreen() {
             [1, 0.6, 1],
         )
     }));
+    const likeStyle = useAnimatedStyle(() => ({
+        opacity: interpolate(
+            translateX.value,
+            [0, screenWidth/2],
+            [0, 1],
+        )
+    }));
+    const nopeStyle = useAnimatedStyle(() => ({
+        opacity: interpolate(
+            translateX.value,
+            [-screenWidth/2, 0],
+            [1, 0],
+        )
+    }));
     const gestureHandler = useAnimatedGestureHandler({
         onStart: (_, context) => {
             console.log("Touch started")
@@ -103,15 +119,14 @@ export default function SwipeScreen() {
                 () => {
                     runOnJS(setCurrentIndex)(currentIndex + 1);
                     runOnJS(setNextIndex)(nextIndex + 1);
+                    translateX.value = 0;
+
                 },
             );
         }
     });
 
-    useEffect(()=>{
-        translateX.value = 0;
-        //setNextIndex(currentIndex + 1);
-    }, [currentIndex, nextIndex]);
+
 
     {/*
     useEffect(()=>{
@@ -200,6 +215,8 @@ export default function SwipeScreen() {
                 <GestureHandlerRootView>
                     <PanGestureHandler onGestureEvent={gestureHandler}>
                         <Animated.View style={cardStyle} className="w-full flex-1">
+                            <Animated.Image source={Like} style={likeStyle} className="w-36 h-36 absolute top-24 left-3 z-10" resizeMode='contain' />
+                            <Animated.Image source={Nope} style={nopeStyle} className="w-36 h-36 absolute top-24 right-3 z-10" resizeMode='contain'  />
                             <SwipeCard recipe={currentRecipe} />
                         </Animated.View>
                     </PanGestureHandler>

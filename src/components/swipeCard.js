@@ -5,7 +5,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 export default function SwipeCard(props) {
     const {name, image, desc} = props.recipe;
   return (
-    <View className="justify-center items-center">
+    <View className="justify-center items-center flex-1">
         <View className="w-[95%] h-[80%] rounded-xl shadow-xl">
             <ImageBackground
                 source={{uri: image}}
