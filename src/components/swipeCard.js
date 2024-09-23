@@ -3,16 +3,16 @@ import React from 'react'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 export default function SwipeCard(props) {
-    const {name, image, desc} = props.recipe;
+    const {strMeal, strMealThumb} = props.recipe;
   return (
     <View className="justify-center items-center flex-1">
         <View className="w-[95%] h-[80%] rounded-xl shadow-xl">
             <ImageBackground
-                source={{uri: image}}
+                source={{uri: strMealThumb}}
                 className="w-full h-full rounded-xl overflow-hidden flex justify-end p-5"
             >
-                <Text style={{fontSize: hp(3.5)}} className="text-white font-bold">{name}</Text>
-                <Text style={{fontSize: hp(2)}} className="text-white font-light leading-relaxed">{desc}</Text>
+                <Text style={{fontSize: hp(3.5)}} className="text-white font-bold">{strMeal}</Text>
+                <Text style={{fontSize: hp(2)}} className="text-white font-light leading-relaxed">Some text here</Text>
             </ImageBackground>
         </View>   
     </View>

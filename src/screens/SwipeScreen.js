@@ -16,6 +16,7 @@ import Nope from '../../assets/nope.png'
 
 export default function SwipeScreen() {
 
+    {/*
     const recipes = [
         {
             name: "Recipe Name 1",
@@ -38,6 +39,12 @@ export default function SwipeScreen() {
             desc: "Some other description",
         },
     ]
+    */}
+
+    const [activeCategory, setActiveCategory] = useState("Beef");
+    const [categories, setCategories] = useState([]);
+    const [recipes, setRecipes] = useState([]);
+    const [query, setQuery] = useState("");
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [nextIndex, setNextIndex] = useState(currentIndex + 1);
@@ -49,10 +56,6 @@ export default function SwipeScreen() {
     console.log("currentRecipe", currentRecipe)
     console.log("nextRecipe", nextRecipe)
 
-    const [activeCategory, setActiveCategory] = useState("Beef");
-    const [categories, setCategories] = useState([]);
-    //const [recipes, setRecipes] = useState([]);
-    const [query, setQuery] = useState("");
 
     const {width: screenWidth} = useWindowDimensions();
     const translateX = useSharedValue(0);
@@ -84,14 +87,14 @@ export default function SwipeScreen() {
     const likeStyle = useAnimatedStyle(() => ({
         opacity: interpolate(
             translateX.value,
-            [0, screenWidth/2],
+            [0, screenWidth/4],
             [0, 1],
         )
     }));
     const nopeStyle = useAnimatedStyle(() => ({
         opacity: interpolate(
             translateX.value,
-            [-screenWidth/2, 0],
+            [-screenWidth/4, 0],
             [1, 0],
         )
     }));
@@ -119,21 +122,20 @@ export default function SwipeScreen() {
                 () => {
                     runOnJS(setCurrentIndex)(currentIndex + 1);
                     runOnJS(setNextIndex)(nextIndex + 1);
-                    translateX.value = 0;
-
                 },
             );
         }
     });
 
-
-
-    {/*
     useEffect(()=>{
-        getCategories();
-        //getRecipes();
+        translateX.value = 0;
+    }, [currentIndex, nextIndex]);
+
+    
+    useEffect(()=>{
+        //getCategories();
+        getRecipes();
     }, [])
-    */}
 
     const handleChangeCategory = category => {
         //getRecipes(category);
@@ -153,7 +155,6 @@ export default function SwipeScreen() {
         }
     }
 
-    {/*
     const getRecipes = async (activeCategory="Beef") => {
         try {
             const response = await axios.get(`https://themealdb.com/api/json/v1/1/filter.php?c=${activeCategory}`)
@@ -165,6 +166,7 @@ export default function SwipeScreen() {
         }
     }
 
+    {/*
     const getRecipesBySearch = async (query) => {
         try {
             const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`)
