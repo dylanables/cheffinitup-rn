@@ -133,14 +133,14 @@ export default function SwipeScreen() {
 
     
     useEffect(()=>{
-        //getCategories();
+        getCategories();
         getRecipes();
     }, [])
 
     const handleChangeCategory = category => {
-        //getRecipes(category);
+        getRecipes(category);
         setActiveCategory(category)
-        //setRecipes([])
+        setRecipes([])
         setQuery("")
     }
 
@@ -183,7 +183,7 @@ export default function SwipeScreen() {
   return (
     <View className="flex-1 bg-white">
         <StatusBar style='dark' />
-        <View className="space-y-6 pt-14 min-h-full">
+        <View className="space-y-6 pt-14 min-h-full flex-col">
             <Navbar screen="Swipe"/>
 
             {/* Search bar */}
@@ -204,8 +204,16 @@ export default function SwipeScreen() {
             </View>
             */}
 
+            {/* Categories */}
+            <View>
+                {
+                    categories.length > 0 && 
+                    <Categories categories={categories} activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} />
+                }
+            </View>
+
             {/* Recipes */}
-            <View className="min-w-full min-h-full flex-1">
+            <View className="min-w-full w-full min-h-fit flex-1">
 
                 {nextRecipe &&
                 <Animated.View style={nextCardStyle} className="w-full flex-1 absolute top-0 left-0 right-0 bottom-0">
@@ -226,16 +234,6 @@ export default function SwipeScreen() {
                 }
 
             </View>
-
-            {/* Categories */}
-            {/*
-            <View>
-                {
-                    categories.length > 0 && 
-                    <Categories categories={categories} activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} />
-                }
-            </View>
-            */}
             
         </View>
     </View>

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, Image, TextInput, TouchableOpacity, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
@@ -22,6 +22,8 @@ export default function HomeScreen() {
         getRecipes();
     }, [])
 
+    console.log("activeCategory", activeCategory)
+
     const handleChangeCategory = category => {
         getRecipes(category);
         setActiveCategory(category)
@@ -41,13 +43,26 @@ export default function HomeScreen() {
     }
 
     const getRecipes = async (activeCategory="Beef") => {
-        try {
-            const response = await axios.get(`https://themealdb.com/api/json/v1/1/filter.php?c=${activeCategory}`)
-            if (response && response.data) {
-                setRecipes(response.data.meals)
+        if (activeCategory == "Liked") {
+            console.log("LIKED CAT CLICKED")
+            try {
+                const response = await axios.get(`https://themealdb.com/api/json/v1/1/filter.php?c=Side`)
+                if (response && response.data) {
+                    setRecipes(response.data.meals)
+                }
+            } catch (error) {
+                console.error("Error:", error)
             }
-        } catch (error) {
-            console.error("Error:", error)
+        } else {
+            console.log("OTHERr CAT CLICKED")
+            try {
+                const response = await axios.get(`https://themealdb.com/api/json/v1/1/filter.php?c=${activeCategory}`)
+                if (response && response.data) {
+                    setRecipes(response.data.meals)
+                }
+            } catch (error) {
+                console.error("Error:", error)
+            }
         }
     }
 
@@ -99,13 +114,23 @@ export default function HomeScreen() {
             <View>
                 {
                     categories.length > 0 && 
-                    <Categories categories={categories} activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} />
+                    <Categories 
+                        categories={categories} 
+                        activeCategory={activeCategory} 
+                        handleChangeCategory={handleChangeCategory}
+                    />
                 }
             </View>
 
             {/* Recipes */}
             <View>
                 <Recipes recipes={recipes} />
+            </View>
+
+            <View className="p-10 w-full">
+                <TouchableOpacity onPress={()=>console.log("Logout")}>
+                    <Text className="text-center font-medium text-red-500">Logout</Text>
+                </TouchableOpacity>
             </View>
             
         </ScrollView>

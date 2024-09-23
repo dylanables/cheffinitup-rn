@@ -12,6 +12,7 @@ import Animated, {FadeInDown, FadeIn} from 'react-native-reanimated';
 //import YoutubeIframe from "react-native-youtube-iframe";
 
 export default function RecipeScreen(props) {
+    console.log("PROPS", props)
     let item = props.route.params;
     const [isLiked, setIsLiked] = useState(false)
     const navigaation = useNavigation()
