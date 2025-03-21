@@ -8,7 +8,7 @@ export default function Navbar({screen}) {
     const navigation = useNavigation();
   return (
     <View className="mx-4 flex-row justify-between items-center mb-2">
-        <TouchableOpacity onPress={()=>navigation.navigate("Home")}>
+        <TouchableOpacity onPress={()=>navigation.navigate("Login")}>
             <HomeIcon size={hp(4)} color="gray" />
         </TouchableOpacity>
 

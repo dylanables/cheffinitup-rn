@@ -8,6 +8,7 @@ import Recipes from '../components/recipes'
 import axios from 'axios'
 import { useNavigation } from '@react-navigation/native';
 import Navbar from '../components/navbar'
+import { getAuth, onAuthStateChanged } from "firebase/auth";;
 
 export default function HomeScreen() {
 
@@ -16,11 +17,23 @@ export default function HomeScreen() {
     const [categories, setCategories] = useState([]);
     const [recipes, setRecipes] = useState([]);
     const [query, setQuery] = useState("");
+    const [user, setUser] = useState();
 
     useEffect(()=>{
         getCategories();
         getRecipes();
     }, [])
+
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in
+            setUser(user.uid);
+        } else {
+            // User is signed out
+            setUser(null);
+        }
+    });
 
     console.log("activeCategory", activeCategory)
 
@@ -54,7 +67,7 @@ export default function HomeScreen() {
                 console.error("Error:", error)
             }
         } else {
-            console.log("OTHERr CAT CLICKED")
+            console.log("OTHER CAT CLICKED")
             try {
                 const response = await axios.get(`https://themealdb.com/api/json/v1/1/filter.php?c=${activeCategory}`)
                 if (response && response.data) {
@@ -90,7 +103,6 @@ export default function HomeScreen() {
 
             {/* Heading text */}
             <View className="mx-4 space-y-2 mb-2">
-                <Text style={{fontSize: hp(1.7)}} className="text-neutral-600">Hello, Dylan!</Text>
                 <Text style={{fontSize: hp(3.8)}} className="font-semibold text-neutral-600">What will you chef up next?</Text>
             </View>
 
@@ -128,10 +140,18 @@ export default function HomeScreen() {
             </View>
 
             <View className="p-10 w-full">
-                <TouchableOpacity onPress={()=>console.log("Logout")}>
-                    <Text className="text-center font-medium text-red-500">Logout</Text>
-                </TouchableOpacity>
+                {
+                user ? 
+                    <TouchableOpacity onPress={()=>auth.signOut()}>
+                        <Text className="text-center font-medium text-red-500">Logout</Text>
+                    </TouchableOpacity>
+                : 
+                    <TouchableOpacity onPress={()=>navigation.navigate('Login')}>
+                        <Text className="text-center font-medium">Login</Text>
+                    </TouchableOpacity>
+                }
             </View>
+            
             
         </ScrollView>
     </View>
