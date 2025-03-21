@@ -9,7 +9,7 @@ export default function WelcomeScreen() {
 const navigation = useNavigation()
 
 useEffect(()=>{
-    setTimeout(()=>navigation.navigate('Home'), 2500)
+    setTimeout(()=>navigation.navigate('Onboard'), 2500)
 }, [])
 
   return (

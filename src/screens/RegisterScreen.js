@@ -9,7 +9,7 @@ import { useState } from 'react';
 import {ArrowLeftCircleIcon} from 'react-native-heroicons/outline';
 import { FontAwesome } from "@expo/vector-icons";
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
 
 const navigation = useNavigation()
 
@@ -55,22 +55,22 @@ const signUp = async () => {
 
         {/* Header */}
         <Text className="text-4xl font-semibold text-center mb-6">
-            Login to view your recipes!
+            Register to save your recipes!
         </Text>
 
         {/* Input Fields */}
         <TextInput value={email} onChangeText={setEmail} className="border border-gray-300 p-5 rounded-lg text-base mb-4" placeholder="Email" keyboardType="email-address" />
         <TextInput value={password} onChangeText={setPassword} className="border border-gray-300 p-5 rounded-lg text-base mb-4" placeholder="Password" secureTextEntry />
 
-        {/* Login Button */}
-        <TouchableOpacity onPress={signIn} className="bg-red-500 p-5 rounded-lg">
-            <Text className="text-white text-center font-semibold">Login</Text>
+        {/* Register Button */}
+        <TouchableOpacity onPress={signUp} className="bg-red-500 p-5 rounded-lg">
+            <Text className="text-white text-center font-semibold">Register</Text>
         </TouchableOpacity>
 
         {/* Social Login */}
         <View className="flex-row items-center space-x-4 my-6">
             <View className="flex-1 h-[1px] bg-gray-300" />
-            <Text className="text-gray-500 px-3">Or login with</Text>
+            <Text className="text-gray-500 px-3">Or register with</Text>
             <View className="flex-1 h-[1px] bg-gray-300" />
         </View>
         <View className="flex-row w-full">
@@ -85,11 +85,11 @@ const signUp = async () => {
             </TouchableOpacity>
         </View>
 
-        {/* Register Navigation */}
+        {/* Login Navigation */}
         <Text className="text-center text-gray-500 mt-4">
-            Don’t have an account?{" "}
-            <Text className="text-blue-500" onPress={() => navigation.navigate("Register")}>
-            Register Now
+            Already have an account?{" "}
+            <Text className="text-blue-500" onPress={() => navigation.navigate("Login")}>
+            Login Now
             </Text>
         </Text>
 
