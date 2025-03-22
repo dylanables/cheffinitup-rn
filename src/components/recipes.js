@@ -9,6 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { ChevronLeftIcon, ClockIcon, FireIcon, HeartIcon, UsersIcon } from 'react-native-heroicons/outline';
 import axios from 'axios';
+import { GetFavorites, AddFavorite } from '../helpers/favorites';
+import { getAuth } from 'firebase/auth';
 
 export default function Recipes({recipes}) {
     const navigation = useNavigation();
@@ -44,13 +46,25 @@ export function Recipe({recipe}) {
     const {strMeal, strMealThumb, idMeal} = recipe
 
     const [isLiked, setIsLiked] = useState(false)
+    const [allFavs, setAllFavs] = useState([])
     const navigaation = useNavigation()
     const [recipeData, setRecipeData] = useState(null)
     const [loading, setLoading] = useState(true)
 
+    console.log("Does this even work?");
+
     useEffect(()=>{
+      console.log("TEST TEST TEST");
       getRecipe(idMeal);
+      getFavorites();
     }, [])
+
+    const auth = getAuth();
+
+    const getFavorites = async () => {
+      const favs = await GetFavorites(auth.currentUser.uid);
+      console.log("FAVS: " + favs)
+    }
 
     const getRecipe = async (idMeal) => {
       try {
@@ -86,6 +100,11 @@ export function Recipe({recipe}) {
     return null
   }
 
+  const handleLike = () => {
+    setIsLiked(!isLiked)
+    AddFavorite(auth.currentUser.uid, idMeal)
+  }
+
     return (
         <ScrollView 
       className="bg-white flex-1" 
@@ -107,7 +126,7 @@ export function Recipe({recipe}) {
         <TouchableOpacity onPress={()=>navigaation.goBack()} className="p-2 rounded-full ml-5 bg-white">
           <ChevronLeftIcon size={hp(3.5)} strokeWidth={4.5} color="#f44336" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>setIsLiked(!isLiked)} className="p-2 rounded-full mr-5 bg-white">
+        <TouchableOpacity onPress={handleLike} className="p-2 rounded-full mr-5 bg-white">
           <HeartIcon size={hp(3.5)} strokeWidth={4.5} color={isLiked ? "red": "gray"} />
         </TouchableOpacity>
       </Animated.View>

@@ -6,9 +6,9 @@ import {ChevronRightIcon, PencilSquareIcon, ShieldExclamationIcon, NoSymbolIcon,
 import Categories from '../components/categories'
 import Recipes from '../components/recipes'
 import axios from 'axios'
-import { useNavigation } from '@react-navigation/native';
+import { NavigationContainerRefContext, useNavigation } from '@react-navigation/native';
 import Navbar from '../components/navbar'
-import { getAuth, onAuthStateChanged, updateProfile} from "firebase/auth";
+import { getAuth, onAuthStateChanged, updateProfile, updateEmail} from "firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
 import BottomTabs from "../navigation/BottomTabs";
 import {ArrowLeftCircleIcon} from 'react-native-heroicons/outline';
@@ -34,13 +34,19 @@ export default function EditProfileScreen() {
     });
 
     const handleEdit = async () => {
-        updateProfile(auth.currentUser, {
-            displayName: name
-        }).then(() => {
-            console.log("Profile updated!")
-        }).catch((error) => {
-            console.log("Error editing profile: " + error)
-        });
+        updateEmail(auth.currentUser, email).then(() => {
+            console.log("Email updated")
+            updateProfile(auth.currentUser, {
+                displayName: name
+            }).then(() => {
+                console.log("Profile updated")
+                navigation.navigate("Profile");
+            }).catch((error) => {
+                console.log("Error editing profile: " + error)
+            });
+          }).catch((error) => {
+            console.log("Error updating email: " + error)
+          });
     }
 
   return (
