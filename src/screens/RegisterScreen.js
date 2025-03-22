@@ -20,24 +20,14 @@ const auth = getAuth();
 onAuthStateChanged(auth, (user) => {
   if (user) {
     // user is signed in already, redirect to homepage
-    navigation.navigate('Home');
+    navigation.navigate('BottomTabs');
   }
 });
-
-const signIn = async () => {
-    try {
-        const user = await signInWithEmailAndPassword(auth, email, password);
-        if (user) navigation.navigate('Home');
-    } catch (error) {
-        console.log(error);
-        alert("Sign in failed: " + error.message);
-    }
-}
 
 const signUp = async () => {
     try {
         const user = await createUserWithEmailAndPassword(auth, email, password);
-        if (user) navigation.navigate('Home');
+        if (user) navigation.navigate('BottomTabs');
     } catch (error) {
         console.log(error);
         alert("Sign in failed: " + error.message);

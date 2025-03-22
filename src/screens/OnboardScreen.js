@@ -15,7 +15,7 @@ const auth = getAuth();
 onAuthStateChanged(auth, (user) => {
   if (user) {
     // user is signed in already, redirect to homepage
-    navigation.navigate('Home');
+    navigation.navigate('BottomTabs');
   }
 });
 
@@ -31,7 +31,7 @@ onAuthStateChanged(auth, (user) => {
         <TouchableOpacity onPress={()=>navigation.navigate('Register')} className="border border-gray-300 p-4 rounded-lg w-full mb-4">
             <Text className="text-center font-semibold">Create Account</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate('Home')} className="p-4 w-full mb-4">
+        <TouchableOpacity onPress={()=>navigation.navigate('BottomTabs')} className="p-4 w-full mb-4">
             <Text className="text-center">Continue as a guest</Text>
         </TouchableOpacity>
     </View>
