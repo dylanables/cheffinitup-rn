@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../../FirebaseConfig';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, onAuthStateChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, onAuthStateChanged, EmailAuthProvider, linkWithCredential } from 'firebase/auth';
 import { useState } from 'react';
 import {ArrowLeftCircleIcon} from 'react-native-heroicons/outline';
 import { FontAwesome } from "@expo/vector-icons";
@@ -18,20 +18,41 @@ const [password, setPassword] = useState('');
 
 const auth = getAuth();
 onAuthStateChanged(auth, (user) => {
-  if (user) {
+  if (user && !user.isAnonymous) {
     // user is signed in already, redirect to homepage
     navigation.navigate('BottomTabs');
   }
 });
 
 const signUp = async () => {
-    try {
-        const user = await createUserWithEmailAndPassword(auth, email, password);
-        if (user) navigation.navigate('BottomTabs');
-    } catch (error) {
-        console.log(error);
-        alert("Sign in failed: " + error.message);
+    console.log("Register button pressed");
+    if (auth.currentUser && auth.currentUser.isAnonymous) {
+        console.log("Upgrading anon account");
+        try {
+            const credential = EmailAuthProvider.credential(email, password);
+            linkWithCredential(auth.currentUser, credential)
+                .then((usercred) => {
+                    const user = usercred.user;
+                    console.log("Anonymous account successfully upgraded", user);
+                    navigation.navigate('BottomTabs')
+                }).catch((error) => {
+                    console.log("Error upgrading anonymous account", error);
+                });
+        } catch (error) {
+            console.log(error);
+            alert("Failed to link your new account: " + error.message);
+        }
+    } else {
+        console.log("Creating new account");
+        try {
+            const user = await createUserWithEmailAndPassword(auth, email, password);
+            if (user) navigation.navigate('BottomTabs');
+        } catch (error) {
+            console.log(error);
+            alert("Sign in failed: " + error.message);
+        }
     }
+
 }
 
   return (

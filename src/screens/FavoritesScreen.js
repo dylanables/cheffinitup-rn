@@ -11,6 +11,7 @@ import Navbar from '../components/navbar'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
 import BottomTabs from "../navigation/BottomTabs";
+import GuestAlert from '../components/guestAlert'
 
 export default function HomeScreen() {
 
@@ -20,6 +21,7 @@ export default function HomeScreen() {
     const [recipes, setRecipes] = useState([]);
     const [query, setQuery] = useState("");
     const [user, setUser] = useState();
+    const [isAnonymous, setIsAnonymous] = useState(true)
 
     useEffect(()=>{
         getCategories();
@@ -30,10 +32,13 @@ export default function HomeScreen() {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             // User is signed in
-            setUser(user.uid);
+            setUser(user);
+            if (user.isAnonymous == false) {
+                setIsAnonymous(false);
+            }
         } else {
             // User is signed out
-            setUser(null);
+            navigation.navigate("Onboard");
         }
     });
 
@@ -102,9 +107,14 @@ export default function HomeScreen() {
             className="space-y-6 pt-14"
         >
 
+            {/* Disclaimer if anonymous */
+                isAnonymous &&
+                <GuestAlert />
+            }
+
             {/* Heading text */}
             <View className="mx-4 space-y-2 mb-2">
-                <Text style={{fontSize: hp(3.8)}} className="font-semibold text-neutral-600">What will you chef up next?</Text>
+                <Text style={{fontSize: hp(3.8)}} className="font-semibold text-neutral-600">Saved Recipes</Text>
             </View>
 
             {/* Search bar */}

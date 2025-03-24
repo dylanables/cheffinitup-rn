@@ -103,8 +103,8 @@ export default function HomeScreen() {
         >
 
             {/* Heading text */}
-            <View className="mx-4 space-y-2 mb-2">
-                <Text style={{fontSize: hp(3.8)}} className="font-semibold text-neutral-600">What will you chef up next?</Text>
+            <View className="mx-4 space-y-2 my-5">
+                <Text style={{fontSize: hp(3.0)}} className="font-semibold text-red-500">What will you chef up next?</Text>
             </View>
 
             {/* Search bar */}
@@ -138,19 +138,6 @@ export default function HomeScreen() {
             {/* Recipes */}
             <View>
                 <Recipes recipes={recipes} />
-            </View>
-
-            <View className="p-10 w-full">
-                {
-                user ? 
-                    <TouchableOpacity onPress={()=>auth.signOut()}>
-                        <Text className="text-center font-medium text-red-500">Logout</Text>
-                    </TouchableOpacity>
-                : 
-                    <TouchableOpacity onPress={()=>navigation.navigate('Login')}>
-                        <Text className="text-center font-medium">Login</Text>
-                    </TouchableOpacity>
-                }
             </View>
             
             

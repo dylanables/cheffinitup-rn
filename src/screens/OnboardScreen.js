@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../../FirebaseConfig';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, onAuthStateChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, onAuthStateChanged, signInAnonymously } from 'firebase/auth';
 import { useState } from 'react';
 
 export default function OnboardScreen() {
@@ -19,6 +19,17 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
+handleGuest = () => {
+  signInAnonymously(auth)
+    .then(() => {
+      // signed in anonymously
+      navigation.navigate('BottomTabs');
+    })
+    .catch((error) => {
+      console.log("Error: " + error)
+    });
+}
+
   return (
     <View className="flex-1 justify-center items-center px-6">
         <StatusBar style='light' />
@@ -31,7 +42,7 @@ onAuthStateChanged(auth, (user) => {
         <TouchableOpacity onPress={()=>navigation.navigate('Register')} className="border border-gray-300 p-4 rounded-lg w-full mb-4">
             <Text className="text-center font-semibold">Create Account</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate('BottomTabs')} className="p-4 w-full mb-4">
+        <TouchableOpacity onPress={handleGuest} className="p-4 w-full mb-4">
             <Text className="text-center">Continue as a guest</Text>
         </TouchableOpacity>
     </View>

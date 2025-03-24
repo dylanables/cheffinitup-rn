@@ -11,10 +11,12 @@ import Navbar from '../components/navbar'
 import { getAuth, onAuthStateChanged, deleteUser} from "firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
 import BottomTabs from "../navigation/BottomTabs";
+import GuestAlert from '../components/guestAlert'
 
 export default function ProfileScreen() {
 
     const [user, setUser] = useState(null);
+    const [isAnonymous, setIsAnonymous] = useState(true)
     const [userEmail, setUserEmail] = useState(null);
     const [userPassword, setUserPassword] = useState(null);
     const [userPhotoURL, setUserPhotoURL] = useState(null);
@@ -25,6 +27,9 @@ export default function ProfileScreen() {
         if (user) {
             // User is signed in
             setUser(user);
+            if (user.isAnonymous == false) {
+                setIsAnonymous(false);
+            }
         } else {
             // User is signed out
             navigation.navigate("Onboard");
@@ -81,6 +86,7 @@ export default function ProfileScreen() {
             className="space-y-6 pt-14"
         >
 
+            {!isAnonymous &&
             <View className="items-center mb-6">
                 {/* User's Photo */}
                 <Image
@@ -91,10 +97,17 @@ export default function ProfileScreen() {
                 <Text className="text-2xl font-semibold text-gray-800">{user?.displayName}</Text>
                 <Text className="text-sm text-gray-600">{user?.email}</Text>
             </View>
+            }
+
+            {/* Disclaimer if anonymous */
+                isAnonymous &&
+                <GuestAlert />
+            }
 
             {/* Buttons */}
             <View className="space-y-4">
-                {/* Edit Profile Button */}
+                {/* Edit Profile Button */
+                !isAnonymous &&
                 <TouchableOpacity
                 className="bg-white rounded-lg mx-2 mt-3 p-6 flex-row justify-between"
                 onPress={()=>navigation.navigate("EditProfile")}
@@ -105,6 +118,21 @@ export default function ProfileScreen() {
                     </View>
                     <ChevronRightIcon />
                 </TouchableOpacity>
+                }
+
+                {/* Create Account Button (if anonymous) */
+                isAnonymous &&
+                <TouchableOpacity
+                className="bg-white rounded-lg mx-2 mt-3 p-6 flex-row justify-between"
+                onPress={()=>navigation.navigate("Register")}
+                >
+                    <View className="flex-row">
+                        <PencilSquareIcon color="black" />
+                        <Text className="text-lg ml-3">Create Account/Sign In</Text>
+                    </View>
+                    <ChevronRightIcon />
+                </TouchableOpacity>
+                }
 
                 {/* Set Dietary Restrictions Button */}
                 <TouchableOpacity
@@ -112,7 +140,7 @@ export default function ProfileScreen() {
                 onPress={()=>{}}
                 >
                     <View className="flex-row">
-                        <ShieldExclamationIcon />
+                        <ShieldExclamationIcon color="black" />
                         <Text className="text-lg ml-3">Set Dietary Restrictions</Text>
                     </View>
                     <ChevronRightIcon />
@@ -124,7 +152,7 @@ export default function ProfileScreen() {
                 onPress={()=>{}}
                 >
                     <View className="flex-row">
-                        <UserGroupIcon />
+                        <UserGroupIcon color="black" />
                         <Text className="text-lg ml-3">Invite Friends</Text>
                     </View>
                     <ChevronRightIcon />
@@ -138,13 +166,16 @@ export default function ProfileScreen() {
                     <ArrowRightStartOnRectangleIcon color="#ef4444" />
                     <Text className="text-lg ml-3 text-red-500">Logout</Text>
                 </TouchableOpacity>
+                
             </View>
 
+            {!isAnonymous &&
             <View className="p-10 w-full">
                 <TouchableOpacity onPress={handleDeleteUser}>
                     <Text className="text-center font-medium text-red-500">Delete Account</Text>
                 </TouchableOpacity>
             </View>
+            }
             
             
         </ScrollView>
