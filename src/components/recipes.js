@@ -43,24 +43,25 @@ export function Recipe({recipe}) {
     const {strMeal, strMealThumb, idMeal} = recipe
 
     const [isLiked, setIsLiked] = useState(false)
-    const [allFavs, setAllFavs] = useState([])
+    const [favs, setFavs] = useState([])
     const navigaation = useNavigation()
     const [recipeData, setRecipeData] = useState(null)
     const [loading, setLoading] = useState(true)
-
-    console.log("Does this even work?");
 
     useEffect(()=>{
       console.log("TEST TEST TEST");
       getRecipe(idMeal);
       getFavorites();
+      console.log("FAVS", favs)
     }, [])
 
     const auth = getAuth();
 
     const getFavorites = async () => {
-      const favs = await GetFavorites(auth.currentUser.uid);
-      console.log("FAVS: " + favs)
+      console.log("Calling getFavorites");
+      const result = await GetFavorites(auth.currentUser.uid);
+      console.log("result", result);
+      setFavs(result?.Favorites ? result?.favorites : [])
     }
 
     const getRecipe = async (idMeal) => {
@@ -124,7 +125,7 @@ export function Recipe({recipe}) {
           <ChevronLeftIcon size={hp(3.5)} strokeWidth={4.5} color="#f44336" />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleLike} className="p-2 rounded-full mr-5 bg-white">
-          <HeartIcon size={hp(3.5)} strokeWidth={4.5} color={isLiked ? "red": "gray"} />
+          <HeartIcon size={hp(3.5)} strokeWidth={4.5} color={favs.includes(idMeal) ? "red": "gray"} />
         </TouchableOpacity>
       </Animated.View>
 
@@ -149,7 +150,7 @@ export function Recipe({recipe}) {
                 <ClockIcon  size={hp(4)} strokeWidth={2.5} color="#525252" />
               </View>
               <View className="flex items-center py-2 space-y-1">
-                <Text style={{fontSize: hp(2)}} className="font-bold text-white">35</Text>
+                <Text style={{fontSize: hp(2)}} className="font-bold text-white">45</Text>
                 <Text style={{fontSize: hp(1.3)}} className="font-bold text-white">mins</Text>
               </View>
             </View>

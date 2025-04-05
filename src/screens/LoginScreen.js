@@ -18,7 +18,7 @@ const [password, setPassword] = useState('');
 
 const auth = getAuth();
 onAuthStateChanged(auth, (user) => {
-  if (user) {
+  if (user && !user.isAnonymous) {
     // user is signed in already, redirect to homepage
     navigation.navigate('BottomTabs');
   }

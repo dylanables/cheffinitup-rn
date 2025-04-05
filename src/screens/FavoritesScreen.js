@@ -12,6 +12,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
 import BottomTabs from "../navigation/BottomTabs";
 import GuestAlert from '../components/guestAlert'
+import { GetFavorites } from '../helpers/favorites'
 
 export default function HomeScreen() {
 
@@ -22,11 +23,18 @@ export default function HomeScreen() {
     const [query, setQuery] = useState("");
     const [user, setUser] = useState();
     const [isAnonymous, setIsAnonymous] = useState(true)
+    const [favs, setFavs] = useState();
 
+    {/*
     useEffect(()=>{
         getCategories();
         getRecipes();
     }, [])
+    */}
+
+    useEffect(()=>{
+        user && GetFavs(user.uid);
+    }, [user])
 
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -42,7 +50,12 @@ export default function HomeScreen() {
         }
     });
 
-    console.log("activeCategory", activeCategory)
+    const GetFavs = async (uid) => {
+        console.log("UID: " + uid);
+        const result = await GetFavorites(uid);
+        console.log("Result: ", result);
+        setFavs(result?.Favorites ? result?.favorites : [])
+    }
 
     const handleChangeCategory = category => {
         getRecipes(category);
@@ -117,7 +130,7 @@ export default function HomeScreen() {
                 <Text style={{fontSize: hp(3.8)}} className="font-semibold text-neutral-600">Saved Recipes</Text>
             </View>
 
-            {/* Search bar */}
+            {/* Search bar
             <View className="mx-4 flex-row items-center rounded-full bg-black/5 p-[6px]">
                 <TextInput 
                     placeholder='Search recipes'
@@ -133,7 +146,7 @@ export default function HomeScreen() {
                 </View>
             </View>
 
-            {/* Categories */}
+            {/* Categories 
             <View>
                 {
                     categories.length > 0 && 
@@ -145,23 +158,18 @@ export default function HomeScreen() {
                 }
             </View>
 
-            {/* Recipes */}
+            {/* Recipes 
             <View>
                 <Recipes recipes={recipes} />
             </View>
 
-            <View className="p-10 w-full">
-                {
-                user ? 
-                    <TouchableOpacity onPress={()=>auth.signOut()}>
-                        <Text className="text-center font-medium text-red-500">Logout</Text>
-                    </TouchableOpacity>
-                : 
-                    <TouchableOpacity onPress={()=>navigation.navigate('Login')}>
-                        <Text className="text-center font-medium">Login</Text>
-                    </TouchableOpacity>
-                }
+            */}
+
+            <View>
+                <Text>Recipes:</Text>
+                <Text>{favs}</Text>
             </View>
+
             
             
         </ScrollView>

@@ -9,13 +9,13 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 import Loading from '../components/loading';
 import Animated, {FadeInDown, FadeIn} from 'react-native-reanimated';
+import { getAuth, getMultiFactorResolver } from 'firebase/auth';
+import LikeButton from '../components/heart';
 //import YoutubeIframe from "react-native-youtube-iframe";
 
 export default function RecipeScreen(props) {
-    console.log("PROPS", props)
     let item = props.route.params;
-    const [isLiked, setIsLiked] = useState(false)
-    const navigaation = useNavigation()
+    const navigation = useNavigation()
     const [recipeData, setRecipeData] = useState(null)
     const [loading, setLoading] = useState(true)
 
@@ -34,6 +34,9 @@ export default function RecipeScreen(props) {
           console.error("Error:", error)
       }
   }
+
+  const auth = getAuth();
+
 
   const getIngredientsIndices = (recipeData) => {
     if (!recipeData) return [];
@@ -75,12 +78,10 @@ export default function RecipeScreen(props) {
 
       {/* Back & like buttons */}
       <Animated.View entering={FadeIn.delay(200).duration(1000)} className="w-full absolute flex-row justify-between items-center pt-14">
-        <TouchableOpacity onPress={()=>navigaation.goBack()} className="p-2 rounded-full ml-5 bg-white">
+        <TouchableOpacity onPress={()=>navigation.goBack()} className="p-2 rounded-full ml-5 bg-white">
           <ChevronLeftIcon size={hp(3.5)} strokeWidth={4.5} color="#f44336" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>setIsLiked(!isLiked)} className="p-2 rounded-full mr-5 bg-white">
-          <HeartIcon size={hp(3.5)} strokeWidth={4.5} color={isLiked ? "red": "gray"} />
-        </TouchableOpacity>
+        <LikeButton userId={auth.currentUser.uid} recipeId={item.idMeal} />
       </Animated.View>
 
       {/* Recipe description */}

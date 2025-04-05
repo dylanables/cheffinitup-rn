@@ -1,8 +1,9 @@
-import { collection, doc, addDoc, getDoc } from "firebase/firestore";
+import { collection, doc, addDoc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../FirebaseConfig";
 
 export const GetFavorites = async (uid) => {
-  const docSnap = await getDoc(doc(db,'Favorites',uid))
+  console.log("GetFavorites called " + uid);
+  const docSnap = await getDoc(doc(db,'Favorites',uid));
   if (docSnap?.exists()) {
     return docSnap.data();
   } else {
@@ -11,19 +12,16 @@ export const GetFavorites = async (uid) => {
       Favorites: [],
     })
   }
-} 
+}
 
 
-const AddFavorite = async (uid, idMeal) => {
-  console.log("ADD FAV: " + idMeal);
+export const UpdateFavorites = async (favs) => {
+  const docRef = doc(db, "Favorites", uid);
   try {
-    const docRef = await addDoc(collection(db, "Favorites"), {
-      UID: uid,
-      Favorites: [],
-      born: 1815
-    });
-    console.log("Document written with ID: ", docRef.id);
+    await updateDoc(docRef, {
+      Favorites: favs
+    })
   } catch (e) {
-    console.error("Error adding document: ", e);
+    console.error("Error updating document: ", e);
   }
 }

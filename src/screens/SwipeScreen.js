@@ -184,7 +184,6 @@ export default function SwipeScreen() {
     <View className="flex-1 bg-white">
         <StatusBar style='dark' />
         <View className="space-y-6 pt-14 min-h-full flex-col">
-            <Navbar screen="Swipe"/>
 
             {/* Search bar */}
             {/*
@@ -205,7 +204,7 @@ export default function SwipeScreen() {
             */}
 
             {/* Categories */}
-            <View>
+            <View className="mt-5">
                 {
                     categories.length > 0 && 
                     <Categories categories={categories} activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} />
